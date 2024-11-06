@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ezen.basic.mapper.BoardMapper">
+
+	<select id="getTime" resultType="String">
+		SELECT NOW()
+	</select>
+
+	<!-- getTitle(), getWriter(), getContent() -->
+	<insert id="create">
+		INSERT INTO board(title, writer, content)
+		VALUES(#{title}, #{writer}, #{content})
+	</insert>
+
+	<!-- <select id="listAll" resultType="com.ezen.basic.domain.BoardVO"> SELECT bno, title, writer, regdate, viewcount FROM board </select> -->
+	<!-- cri -> [searchType=null, keyword=null, getPage()=1, getPerPageNum()=10] -->
+	<!-- 
+	<select id="listCriteria" resultType="com.ezen.basic.domain.BoardVO" parameterType="com.ezen.basic.domain.Criteria">
+		SELECT bno, title, writer, regdate, viewcount FROM board
+		ORDER BY bno DESC
+		LIMIT #{pageStart}, #{perPageNum} 
+	</select> -->
+
+	<select id="listSearch" resultType="com.ezen.basic.domain.BoardVO" parameterType="com.ezen.basic.domain.Criteria">
+		SELECT bno, title, writer, regdate, viewcount
+		FROM board
+		WHERE bno > 0
+		<include refid="search"/>
+		ORDER BY bno DESC
+		LIMIT #{pageStart}, #{perPageNum}
+	</select>
+
+	<select id="countPaging" resultType="int" parameterType="com.ezen.basic.domain.Criteria">
+		SELECT count(*) FROM board WHERE bno > 0
+		<include refid="search"></include>
+	</select>
+
+	<!-- 게시판 목록과 페이징의 공통 조건 사용 -->
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				AND title LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">
+				AND content LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'w'.toString()">
+				AND writer LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				AND title LIKE CONCAT('%', #{keyword}, '%')
+				OR content LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				AND content LIKE CONCAT('%', #{keyword}, '%')
+				OR writer LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				AND title LIKE CONCAT('%', #{keyword}, '%')
+				OR content LIKE CONCAT('%', #{keyword}, '%')
+				OR writer LIKE CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+	</sql>
+
+	<select id="read" parameterType="long" resultType="com.ezen.basic.domain.BoardVO">
+		SELECT bno, title, content, writer, regdate, updatedate, viewcount
+		FROM board
+		WHERE bno = #{bno}
+	</select>
+
+	<update id="update">
+		UPDATE board
+		SET title = #{title}, content = #{content}
+		WHERE bno = #{bno}
+	</update>
+
+	<update id="addViewCount">
+		UPDATE board
+		SET viewcount = viewcount + 1
+		WHERE bno = #{bno}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM board
+		WHERE bno = #{bno}
+	</delete>
+
+</mapper>
