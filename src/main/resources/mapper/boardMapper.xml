@@ -7,7 +7,7 @@
 	</select>
 
 	<!-- getTitle(), getWriter(), getContent() -->
-	<insert id="create">
+	<insert id="create" parameterType="com.ezen.basic.domain.BoardVO">
 		INSERT INTO board(title, writer, content)
 		VALUES(#{title}, #{writer}, #{content})
 	</insert>
@@ -69,19 +69,19 @@
 		WHERE bno = #{bno}
 	</select>
 
-	<update id="update">
+	<update id="update" parameterType="com.ezen.basic.domain.BoardVO">
 		UPDATE board
 		SET title = #{title}, content = #{content}
 		WHERE bno = #{bno}
 	</update>
 
-	<update id="addViewCount">
+	<update id="addViewCount" parameterType="long">
 		UPDATE board
 		SET viewcount = viewcount + 1
 		WHERE bno = #{bno}
 	</update>
 
-	<delete id="delete">
+	<delete id="delete" parameterType="long">
 		DELETE FROM board
 		WHERE bno = #{bno}
 	</delete>

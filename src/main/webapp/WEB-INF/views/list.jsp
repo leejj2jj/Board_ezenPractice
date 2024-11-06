@@ -230,15 +230,18 @@
 					<nav aria-label="Page navigation example">
 						<ul class="pagination">
 							<c:if test="${pageMaker.prev}">
-								<li class="page-item"><a class="page-link" href="/list${pageMaker.makeSearch(pageMaker.startPage - 1)}">Previous</a></li>
+								<li class="page-item">
+								<a class="page-link" href="/list${pageMaker.makeSearch(pageMaker.startPage - 1)}">Previous</a></li>
 							</c:if>
 
 							<c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="idx">
-								<li class="page-item <c:out value="${pageMaker.cri.page == idx ? 'active' : ''}"></c:out>"><a class="page-link" href="/list${pageMaker.makeSearch(idx)}">${idx}</a></li>
+								<li class="page-item <c:out value="${pageMaker.cri.page == idx ? 'active' : ''}"></c:out>">
+								<a class="page-link" href="/list${pageMaker.makeSearch(idx)}">${idx}</a></li>
 							</c:forEach>
 
 							<c:if test="${pageMaker.next}">
-								<li class="page-item"><a class="page-link" href="/list${pageMaker.makeSearch(pageMaker.endPage + 1)}">Next</a></li>
+								<li class="page-item">
+								<a class="page-link" href="/list${pageMaker.makeSearch(pageMaker.endPage + 1)}">Next</a></li>
 							</c:if>
 						</ul>
 					</nav>
@@ -247,6 +250,7 @@
 				<div class="col">
 					<a href="/register" class="btn btn-primary">글쓰기</a>
 				</div>
+
 				<div class="col-2">
 					<select class="form-select" aria-label="Default select example" name="searchType" id="searchType">
 						<option value="n" <c:out value="${cri.searchType == null ? 'selected' : ''}"/>>검색 유형 선택</option>

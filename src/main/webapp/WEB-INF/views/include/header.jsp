@@ -1,5 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
+<script>
+	function fn_go_list() {
+		let keyword = document.getElementById("keyword").value;
+
+		location.href = "/list" + '${pageMaker.makeQuery(1)}' + '&searchType=tcw&keyword=' + keyword;
+	}
+</script>
+
 <header>
 	<!-- Fixed navbar -->
 	<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
@@ -14,8 +22,8 @@
 					<li class="nav-item"><a class="nav-link active" aria-current="page" href="/list">Posts</a></li>
 				</ul>
 				<form class="d-flex" role="search">
-					<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-success" type="submit">Search</button>
+					<input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="keyword" id="keyword" value="${cri.keyword}">
+					<button class="btn btn-outline-success" type="button" onclick="fn_go_list()">Search</button>
 				</form>
 			</div>
 		</div>
